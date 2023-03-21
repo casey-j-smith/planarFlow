@@ -226,7 +226,7 @@ class SettingsFrame(ttk.Frame):
             elif self.dark_mode.get():
                 top.mode = "dark"
 
-            top.set_GUI_theme()
+            top.set_GUI_theme(top.mode)
 
             top.flow_color = self.flow_color_selection.get()
             top.flow_highlight_color = self.flow_highlight_color_selection.get()

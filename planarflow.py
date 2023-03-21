@@ -15,17 +15,20 @@ You should have received a copy of the GNU General Public License along with pla
 <https://www.gnu.org/licenses/>.
 """
 import sys
+import os
+import platform
 import inspect
 import tkinter as tk
 from tkinter import ttk, filedialog
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.backends.backend_pdf
 
 from lib.configureplot import (set_figure_properties, set_figure_colors, set_figure_axes, set_figure_ticks,
                                set_figure_ticklabels, set_figure_grid)
 from lib.updatablecollections import UpdatableLineCollection, UpdatablePatchCollection
 from lib.pixel_conversions import pixel_to_x, pixel_to_y
-from lib.makefullscreen import make_fullscreen
+from lib.app_setters import set_fullscreen, set_icon
 import lib.numerical_methods
 
 from lib.frames.differentialequationsframe import DifferentialEquationsFrame
@@ -40,12 +43,16 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
+        self.root_dir = os.path.dirname(__file__)
+        self.platform_type = platform.system()
+
         self.title("planarFlow")
         self.resizable(False, False)
-        make_fullscreen(self)
+        set_fullscreen(self, self.platform_type)
+        set_icon(self, os.path.join(self.root_dir, "lib", "logo.ico"), self.platform_type)
 
         self.mode = "dark"
-        self.tk.call("source", "Azure-ttk-theme-gif-based/azure.tcl")
+        self.tk.call("source", os.path.join(self.root_dir, "Azure-ttk-theme-gif-based", "azure.tcl"))
 
         # Fonts for widgets and title labels
         self.title_font = tk.font.Font(family="DejaVu Sans", size=11, underline=True)
@@ -62,7 +69,7 @@ class App(tk.Tk):
         self.update_idletasks()
         self.width = self.winfo_width()
         self.height = self.winfo_height()
-        self.UI_frame_width = self.widget_font.measure("0" * 36)
+        self.UI_frame_width = self.widget_font.measure("0" * 45)
         self.UI_row_height = 50  # Height of each row of widgets in UI frame
 
         # Widget dimensions
@@ -117,7 +124,7 @@ class App(tk.Tk):
         self.animation_interval = 1
         self.animation_repeat_delay = 1000
 
-        self.set_GUI_theme()
+        self.set_GUI_theme(self.mode)
 
         # Initializing array of flow objects and collection arrays for plotting.
         self.flows = []
@@ -289,7 +296,8 @@ class App(tk.Tk):
                         time_series_window.resizable(True, True)
                         time_series_window.configure(height=self.time_series_window_height,
                                                      width=self.time_series_window_width)
-                        time_series_window.title("")
+                        time_series_window.title("Time series")
+                        set_icon(time_series_window, os.path.join(self.root_dir, "lib", "logo.ico"), self.platform_type)
 
                         time_series_fig = plt.figure()
 
@@ -347,12 +355,12 @@ class App(tk.Tk):
 
         self.bind("<Control-s>", save_image)
 
-    def set_GUI_theme(self):
-        if self.mode == "dark":
+    def set_GUI_theme(self, mode):
+        if mode == "dark":
             self.tk.call("set_theme", "dark")
             self.figure_background_color = "#404040"
             self.figure_axes_color = "white"
-        elif self.mode == "light":
+        elif mode == "light":
             self.tk.call("set_theme", "light")
             self.figure_background_color = "#E4E4E4"
             self.figure_axes_color = "black"

@@ -12,6 +12,7 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Gen
 You should have received a copy of the GNU General Public License along with planarFlow. If not, see
 <https://www.gnu.org/licenses/>.
 """
+import os
 from tkinter import ttk, PhotoImage, Toplevel, TOP, BOTH
 import matplotlib.pyplot as plt
 from matplotlib import animation
@@ -21,14 +22,14 @@ from ..configureplot import (set_figure_properties, set_figure_colors, set_figur
                              set_figure_ticklabels, set_figure_grid)
 from ..updatablecollections import UpdatablePatchCollection, UpdatableLineCollection
 from .settingsframe import SettingsFrame
-from ..makefullscreen import make_fullscreen
+from ..app_setters import set_fullscreen, set_icon
 
 
 class UserActionsFrame(ttk.Frame):
     def __init__(self, top):
         super().__init__()
 
-        self.settings_icon = PhotoImage(file="lib/settings_icon.png")
+        self.settings_icon = PhotoImage(file=os.path.join(top.root_dir, "lib", "settings_icon.png"))
 
         for i in range(4):
             self.columnconfigure(i, weight=1)
@@ -40,10 +41,11 @@ class UserActionsFrame(ttk.Frame):
             top.is_animating = True
 
             ani_window = Toplevel(top)
-            make_fullscreen(ani_window)
+            set_fullscreen(ani_window, top.platform_type)
+            set_icon(ani_window, os.path.join(top.root_dir, "lib", "logo.ico"), top.platform_type)
 
             ani_window.resizable(False, False)
-            ani_window.title("")
+            ani_window.title("Animation")
 
             ani_frame = ttk.Frame(ani_window, width=top.figure_width, height=top.figure_height)
             ani_frame.pack(anchor="center")
@@ -139,12 +141,18 @@ class UserActionsFrame(ttk.Frame):
         def open_settings():
             settings_window = Toplevel(top)
             settings_window.resizable(False, False)
-            settings_window.title("")
+            settings_window.title("Settings")
+            set_icon(settings_window, os.path.join(top.root_dir, "lib", "logo.ico"), top.platform_type)
 
             settings_frame = SettingsFrame(settings_window, top)
             settings_frame.config(width=top.settings_window_width, height=top.settings_window_height)
             settings_frame.pack()
             settings_frame.grid_propagate(False)
+
+            def on_closing():
+                settings_window.destroy()
+
+            settings_window.protocol("WM_DELETE_WINDOW", on_closing)
 
         settings_button = ttk.Button(self, image=self.settings_icon, width=1, command=open_settings)
         settings_button.grid(row=0, column=3)
