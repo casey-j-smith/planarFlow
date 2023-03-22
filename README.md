@@ -8,17 +8,17 @@ systems.
 ## Contents
 
 - [Features](#features)
-- [How to use](#how_to_use)
-  - [Entering differential equations](#differential_equations)
-  - [Configuring plot](#configure_plot)
-  - [Adding graphs](#add_graphs)
-  - [Adding trajectories](#add_trajectories)
-  - [Animating](#animate)
-  - [Saving PDFs](#save_pdf)
-  - [Viewing time series](#viewing_time_series)
-  - [Additional settings](#settings)
+- [How to use](#how-to-use)
+  - [Entering differential equations](#entering-differential-equations)
+  - [Configuring plot](#configuring-plot)
+  - [Adding graphs](#adding-graphs)
+  - [Adding trajectories](#adding-trajectories)
+  - [Animating](#animating)
+  - [Saving PDFs](#saving-pdfs)
+  - [Viewing time series](#viewing-time-series)
+  - [Additional settings](#additional-settings)
 - [Details](#details)
-- [Requirements](#requirements)
+- [Required packages](#required-packages)
 - [Warning](#warning)
 - [License](#license)
 
@@ -161,13 +161,6 @@ This application uses [rdbende](https://github.com/rdbende)'s
 [light mode](readme_images/lightmode.png) uses a different color configuration, therefore selected GIFs called by ttk are 
 modified to match.
 
-At the moment, ***planarFlow*** functions solely as a full-screen application. This implementation in Tkinter is
-platform dependent, and can be found in `lib/makefullscreen.py`. For Windows users, modify this file as follows:
-```python
-def make_fullscreen(window):
-  window.wm_state("zoomed")
-```
-
 Available numerical methods include 2nd- and 4th-order Runge-Kutta, as well as Euler's method (do not use unless
 demonstrating its pitfalls). ***planarFlow*** was designed as an educational resource rather than a tool for scientific
 research. If desired, more robust and stable methods can be implemented in the `lib/numerical_methods` file. Additional 
@@ -210,4 +203,3 @@ the inputs are not sanitized.
 ## License
 
 planarFlow is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html). 
-
