@@ -81,7 +81,7 @@ class AddGraphsFrame(ttk.Frame):
                         eqn(0, 0)
                     except ZeroDivisionError:
                         pass
-                    except (NameError, SyntaxError, ValueError):
+                    except (NameError, SyntaxError, ValueError, TypeError):
                         self.error_messages.append("Invalid expression for equation.")
 
                 if len(equation) == 2:

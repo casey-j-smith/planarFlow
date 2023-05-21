@@ -225,8 +225,8 @@ class FigureSettingsFrame(ttk.Frame):
                 # If there are already trajectories plotted, update the circle and arrowhead for each flow so the
                 # appearance is maintained.
                 for flow in top.flows:
-                    flow.update_circle_radius(top.flow_circle_diameter, top.figure_width, top.figure_height,
-                                              self.xmin, self.xmax, self.ymin, self.ymax)
+                    flow.update_circle_diameter(top.flow_circle_diameter, top.figure_width, top.figure_height,
+                                                self.xmin, self.xmax, self.ymin, self.ymax)
                     flow.update_arrowhead_points(top.flow_arrowhead_size, top.figure_width, top.figure_height,
                                                  self.xmin, self.xmax, self.ymin, self.ymax)
 

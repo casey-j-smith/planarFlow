@@ -49,13 +49,13 @@ class Flow:
         self.trajectory = np.column_stack([self.x_values, self.y_values])  # Will be used in LineCollection
 
     def create_circle(self, diameter, fig_width, fig_height, xmin, xmax, ymin, ymax):
-        x_diameter = pixel_to_x(diameter, fig_width, xmin, xmax)
-        y_diameter = pixel_to_y(diameter, fig_height, ymin, ymax)
+        x_diameter = pixel_to_x(diameter, fig_width, xmin, xmax) - xmin
+        y_diameter = pixel_to_y(diameter, fig_height, ymin, ymax) - ymin
         self.circle = patches.Ellipse((self.x0, self.y0), width=x_diameter, height=y_diameter)
 
-    def update_circle_radius(self, diameter, fig_width, fig_height, xmin, xmax, ymin, ymax):
-        self.circle.width = pixel_to_x(diameter, fig_width, xmin, xmax)
-        self.circle.height = pixel_to_y(diameter, fig_height, ymin, ymax)
+    def update_circle_diameter(self, diameter, fig_width, fig_height, xmin, xmax, ymin, ymax):
+        self.circle.width = pixel_to_x(diameter, fig_width, xmin, xmax) - xmin
+        self.circle.height = pixel_to_y(diameter, fig_height, ymin, ymax) - ymin
 
     # Creating and updating arrowheads will be contingent on whether the flow is an equilibrium point or not. If the
     # flow is not equilibrium, then a triangle will be formed and drawn and will be modified as the axes limits are
@@ -69,13 +69,11 @@ class Flow:
                                                                        xmin, xmax, ymin, ymax))
 
     def get_arrowhead_points(self, arrowhead_size, fig_width, fig_height, xmin, xmax, ymin, ymax):
-        # Tangent vector at end of flow (determines direction of the arrow).
-        tan = np.array([self.dxdt(self.t_values[-1], self.x_values[-1], self.y_values[-1]),
-                        self.dydt(self.t_values[-1], self.x_values[-1], self.y_values[-1])])
-
-        # Convergent tangent vector components to pixel units (to get direction relative to display).
-        tan[0] = x_to_pixel(tan[0], fig_width, xmin, xmax)
-        tan[1] = y_to_pixel(tan[1], fig_height, ymin, ymax)
+        # Tangent vector at end of flow. Here the pixel coordinates of the last two points are subtracted.
+        tan = np.array([x_to_pixel(self.x_values[-1], fig_width, xmin, xmax) -
+                        x_to_pixel(self.x_values[-2], fig_width, xmin, xmax),
+                        y_to_pixel(self.y_values[-1], fig_height, ymin, ymax) -
+                        y_to_pixel(self.y_values[-2], fig_height, ymin, ymax)])
 
         # Normalizing.
         u = tan / np.linalg.norm(tan)

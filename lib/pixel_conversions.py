@@ -1,6 +1,8 @@
 """
 Set of functions that convert Cartesian (x, y) coordinates to and from pixel coordinates (x_p, y_p) on screen. The
 arguments x, y, xmin/xmax, and ymin/ymax are Cartesian values. xp, yp, fig_width, and fig_height are in pixel units.
+The pixel coordinate system is as follows: the bottom-left corner is the origin (0, 0), and the top-right is the
+ordered pair (figure_width, figure_height).
 
 Copyright (C) 2023 Casey Smith <casey.junpei.smith@gmail.com>
 
@@ -18,16 +20,16 @@ You should have received a copy of the GNU General Public License along with pla
 
 
 def x_to_pixel(x, fig_width, xmin, xmax):
-    return x * fig_width / (xmax - xmin)
+    return (x - xmin) * fig_width / (xmax - xmin)
 
 
 def y_to_pixel(y, fig_height, ymin, ymax):
-    return y * fig_height / (ymax - ymin)
+    return (y - ymin) * fig_height / (ymax - ymin)
 
 
 def pixel_to_x(xp, fig_width, xmin, xmax):
-    return (xmax - xmin) * xp / fig_width
+    return xp * (xmax - xmin) / fig_width + xmin
 
 
 def pixel_to_y(yp, fig_height, ymin, ymax):
-    return (ymax - ymin) * yp / fig_height
+    return yp * (ymax - ymin) / fig_height + ymin

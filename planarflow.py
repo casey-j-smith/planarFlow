@@ -61,7 +61,7 @@ class App(tk.Tk):
         # Options for colors and numerical method
         self.color_options = ("black", "gray", "white", "blue", "green", "red", "cyan", "magenta", "yellow")
         self.numerical_method_dict = dict(inspect.getmembers(lib.numerical_methods, lambda x: inspect.isfunction(x) and
-                                                             x.__module__ == lib.numerical_methods.__name__))
+                                                                                              x.__module__ == lib.numerical_methods.__name__))
         self.numerical_method_options = list(self.numerical_method_dict.keys())
         self.numerical_method = "RK2"  # default
 
@@ -234,32 +234,32 @@ class App(tk.Tk):
 
                     if x <= (self.figure_settings.xmax + self.figure_settings.xmin) / 2:  # if x is in left half
                         if y <= (self.figure_settings.ymax + self.figure_settings.ymin) / 2:  # if y is in bottom half
-                            self.annot.xy = (x + pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
-                                                            self.figure_settings.xmax),
-                                             y + pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
-                                                            self.figure_settings.ymax))
+                            self.annot.xy = (x + (pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
+                                                             self.figure_settings.xmax) - self.figure_settings.xmin),
+                                             y + (pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
+                                                             self.figure_settings.ymax) - self.figure_settings.ymin))
                             self.annot.set_horizontalalignment("left")
                             self.annot.set_verticalalignment("bottom")
                         else:
-                            self.annot.xy = (x + pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
-                                                            self.figure_settings.xmax),
-                                             y - pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
-                                                            self.figure_settings.ymax))
+                            self.annot.xy = (x + (pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
+                                                             self.figure_settings.xmax) - self.figure_settings.xmin),
+                                             y - (pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
+                                                             self.figure_settings.ymax) - self.figure_settings.ymin))
                             self.annot.set_horizontalalignment("left")
                             self.annot.set_verticalalignment("top")
                     else:
                         if y <= (self.figure_settings.ymax + self.figure_settings.ymin) / 2:
-                            self.annot.xy = (x - pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
-                                                            self.figure_settings.xmax),
-                                             y + pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
-                                                            self.figure_settings.ymax))
+                            self.annot.xy = (x - (pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
+                                                             self.figure_settings.xmax) - self.figure_settings.xmin),
+                                             y + (pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
+                                                             self.figure_settings.ymax) - self.figure_settings.ymin))
                             self.annot.set_horizontalalignment("right")
                             self.annot.set_verticalalignment("bottom")
                         else:
-                            self.annot.xy = (x - pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
-                                                            self.figure_settings.xmax),
-                                             y - pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
-                                                            self.figure_settings.ymax))
+                            self.annot.xy = (x - (pixel_to_x(offset, self.figure_width, self.figure_settings.xmin,
+                                                             self.figure_settings.xmax) - self.figure_settings.xmin),
+                                             y - (pixel_to_y(offset, self.figure_height, self.figure_settings.ymin,
+                                                             self.figure_settings.ymax) - self.figure_settings.ymin))
                             self.annot.set_horizontalalignment("right")
                             self.annot.set_verticalalignment("top")
 
